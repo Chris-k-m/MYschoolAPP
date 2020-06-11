@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+{% block body %}
+<section id="section-index" style="background-image: url('static/home.jpg')">
+        <div id="wrap">
+            <div id="header">
+
+                <div class="row cv-section">
+                <div class="span9">
+                    <div class="container" style="margin-top:20px," >
+                            <h1>SCHOOL_ME</h1>
+                        <p>welcome to school_me where you learn with your touch of comfort and our touch of reliability</p>
+                                    <button type="button" class="btn btn-primary btn-lg btn-block">Learn About Us</button>
+                                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock body %}
