@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SCHOOL_ME</title>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+
+    <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet">
+</head>
+
+    <body>
+        <section class="hero is-primary is-fullheight">
+           <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+              <a class="navbar-brand" href=""><span class="badge badge- secondary">SCHOOL_ME</span></a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+               <form class="form-inline my-3 my-lg-2">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+               </form>
+
+              <div class="topnav" id="myTopnav">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active">
+                      <a class="nav-link" href="/">Home <span class="sr-only">{{ current_user.name}}</span></a>
+                  </li>
+
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/account"><span class="badge badge-secondary">Profile</span></a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="/question"><span class="badge badge-secondary">Questions</span></a>
+                  </li>
+
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/account_details"><span class="badge badge-secondary">Edit_Profile</span></a>
+                  </li>
+
+
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/answer"><span class="badge badge-secondary">answer</span></a>>
+                  </li>
+
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/ask"><span class="badge badge-secondary">ask</span></a>
+                  </li>
+
+
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/unanswered"><span class="badge badge-secondary">unanswered</span></a>
+                  </li>
+
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/logout"><span class="badge badge-secondary">Exit</span></a>
+                  </li>
+
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="/sign_up"><span class="badge badge-secondary">Sign_up</span></a>
+                  </li>
+
+                  <li class="nav-item a">
+                    <a class="nav-link" href="/login"><span class="badge badge-secondary">Login</span></a>
+                  </li>
+                    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                        <i class="fa fa-bars"></i>
+                    </a>
+
+
+                </ul>
+                <div class="dropdown show">
+                      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Shortcuts
+                      </a>
+
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <button class="dropdown-item" type="button">
+                          <a class="nav-link" href="/school_work">Assignment</a>
+                      </button>
+
+                      <button class="dropdown-item" type="button">
+                          <a class="nav-link" href="/work_details">Check Assignment</a>
+                      </button>
+
+                      <button class= type="button">
+                          <a class="nav-link" href="/add_work">Update Assignment</a>
+                      </button>
+
+                  </div>
+                </div>
+
+              </div>
+           </nav>
+
+                    <div class="hero-body">
+                        <div class="container has-text-centered">
+                           {% block content %}
+                                {% block body %}
+                                {% endblock body %}
+                            <footer>
+                                <section>
+                                     <div class="social-media fixed">
+                                            <a href="https://www.facebook.com"class="facebook-icon social-icon">
+                                                <i class="fa fa-facebook"></i>
+                                            </a>
+
+                                            <a href="https://www.twitter.com"class="twitter-icon social-icon">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+
+                                            <a href="https://www.instagram.com"class="instagram-icon social-icon">
+                                                <i class="fa fa-instagram"></i>
+                                            </a>
+
+                                            <a href="https://www.linkedin.com"class="linkedin-icon social-icon">
+                                                <i class="fa fa-linkedin"></i>
+                                            </a>
+
+                                     </div>
+                                </section>
+                            </footer>
+                           {% endblock content %}
+                        </div>
+                    </div>
+        </section>
+    </body>
+
+</html>

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+                <form method="POST", action="/account_details">
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input is-large" type="email" name="change_email" placeholder="Change Email" autofocus="">
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input is-large" type="text" name="location" placeholder="Add location" autofocus="">
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input is-large" type="integer" name="contact" placeholder="Add contact">
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input is-large" type="integer" name="guardian_contact" placeholder="guardians_contact">
+                                        </div>
+                                    </div>
+
+                                    <button class="button is-block is-info is-large is-fullish">Save</button>
+                </form>
+
+        </div>
+
+</div>
+{% endblock content %}
