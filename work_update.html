@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% block body %}
+
+<section >
+    <div class="container">
+            <h3>{{found_assignment.title}}</h3>
+        </div>
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <h2>Welcome to {{found_assignment.title}} </h2>
+
+                    <p class="lead">{{found_assignment.content}}</p>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    {% if auth_user %}
+          <form action="/work_update" method="post" enctype="multipart/form-data">
+                <fieldset id="assignment_update">
+                            <div class="form-form">
+                                <input type="text" name="the_title" class="form-control" placeholder="Enter title" value="{{found_assignment.title}}">
+                            </div>
+
+                            <textarea name="content"   class="form-control">
+                                {{found_assignment.content}}
+                            </textarea>
+                            <div class="form-form">
+                            <label for="">Category</label>
+                             <select  id="category"  name="category">
+                                 <option value="BUSINESS" >BUSINESS</option>
+                                 <option value="MATHEMATICS">MATHEMATICS</option>
+                                 <option value="PHYSICS">PHYSICS</option>
+                                 <option value="BIOLOGY">BIOLOGY</option>
+                                 <option value="COMPUTER">CODING</option>
+                                 <option value="CHEMISTRY">CHEMISTRY</option>
+                                        </select>
+                                    </div>
+                                    <input type="file" name="username">
+                                    <button class="btn btn-info">Update</button>
+                        </fieldset>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+             <p>{{found_assignment.category}}</p>
+            {% if auth_user %}
+                <a href="/posts/delete/{{found_post.id}}" class="btn btn-danger">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock body %}

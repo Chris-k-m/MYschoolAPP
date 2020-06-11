@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+ <div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3"></div>
+             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <h3 class="title">sign_up</h3>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="notification is-danger">
+                                {{ messages[0] }}. Go to <a href="/login">login page</a>.
+                            </div>
+                        {% endif %}
+                        {% endwith %}
+                            <form method="POST" action="/sign_up">
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-large" type="email" name="user_email" placeholder="Email" autofocus="">
+                                    </div>
+                                </div>
+
+
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-large" type="text" name="user_name" placeholder="user name">
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-large" type="password" name="password1" placeholder="password">
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-large" type="password" name="password2" placeholder="confirm password">
+                                    </div>
+                                </div>
+                                <button class="button is-block is-info is-large is-fullish">Sign up</button>
+                            </form>
+                    </div>
+                </div>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3"></div>
+    </div>
+</div>
+{% endblock content %}

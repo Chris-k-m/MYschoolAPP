@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block body %}
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+<h1> Assignment Page </h1>
+{% if found_assignment %}
+        {% for task in found_assignment %}
+                <p>{{task.title}}</p>
+                <p>{{task.content}}</p>
+<hr>
+        {% endfor  %}
+{% else %}
+{% endif %}
+
+{% endblock body %}

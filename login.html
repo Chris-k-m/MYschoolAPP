@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+ <div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3"></div>
+             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <h3 class="title">login</h3>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="notification is-danger">
+                                {{ messages[0] }}
+                            </div>
+                        {% endif %}
+                        {% endwith %}
+                            <form method="POST" action="/login">
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-large" type="email" name="user_email" placeholder="Email" autofocus="">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-large" type="password" name="password1" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="dropdownCheck2">
+                                    <label class="form-check-label" for="dropdownCheck2">
+                                      Remember me
+                                    </label>
+                                </div>
+                                <button class="button is-block is-info is-large is-fullish">login</button>
+
+                            </form>
+                        <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/sign_up">New around here? Sign up</a>
+                            <a class="dropdown-item" href="#">Forgot password?</a>
+                        </div>
+                    </div>
+                </div>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3"></div>
+    </div>
+</div>
+{% endblock content %}
