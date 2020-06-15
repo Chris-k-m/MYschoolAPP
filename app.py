@@ -15,7 +15,6 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "/login"
-oid = OpenID(app, os.path.join(basedir, 'tmp'))
 """
 LoginManager comes with
 is_authenticated
@@ -26,13 +25,8 @@ get_id()
 
 
 @login_manager.user_loader
-def load_user(student_id):
-    return Student.query.get(int(student_id))
-
-
-@login_manager.user_loader
-def load_user(teacher_id):
-    return Teacher.query.get(int(teacher_id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 # db location
@@ -46,51 +40,40 @@ app.config['ASSIGNMENT_UPLOAD_FOLDER'] = os.path.join(basedir, 'static/assignmen
 
 
 # db tables
-class Student(UserMixin, db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    is_student = db.Column(db.Boolean, default=True)
     username = db.Column(db.String(100), index=True, nullable=False)
     email = db.Column(db.String(100), index=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    admin = db.Column(db.Boolean, default=True)
+    admin = db.Column(db.Boolean, default=False)
+    teacher = db.Column(db.Boolean)
+
     # questions_asked = db.relationship('Question', backref='author', lazy='dynamic')
 
     questions_asked = db.relationship(
         'Question',
-        foreign_keys='Question.student_id',
-        backref='student',
+        foreign_keys='Question.asked_by_id',
+        backref='asker',
         lazy=True
     )
 
-    def __repr__(student):
-        return student.username
+    answers_requested = db.relationship(
+        'Question',
+        foreign_keys='Question.teacher_id',
+        backref='teacher',
+        lazy=True
+    )
 
-
-class Teacher(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    is_teacher = db.Column(db.Boolean, default=True)
-    username = db.Column(db.String(100), index=True, nullable=False)
-    email = db.Column(db.String(100), index=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    answers_requested = db.relationship('Question', backref='teacher', lazy='dynamic')
-
-    # answers_requested = db.relationship(
-    #     'Question',
-    #     foreign_keys='Question.teacher_id',
-    #     backref='teacher',
-    #     lazy=True
-    # )
-
-    def __repr__(teacher):
-        return teacher.username
+    def __repr__(self):
+        return self.username
 
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.Text)
     answer = db.Column(db.Text)
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
-    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    asked_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return self.question
@@ -233,7 +216,7 @@ def signup_user():
         password1 = request.form['password1']
         password2 = request.form['password2']
 
-        user = Student or Teacher.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
         if user:  # if a user is found,  redirect back to signup page so user can try again
             flash('Email address already exists')
             return redirect('/sign_up')
@@ -248,8 +231,8 @@ def signup_user():
                 username=username,
                 email=email,
                 password=password,
-                teacher=True,
-                student=False
+                teacher=False,
+                admin=True
             )
 
             # add user into db
@@ -270,7 +253,7 @@ def login():
         password = request.form['password1']
         remember = True if request.form.get('remember') else False
 
-        user = Student or Teacher.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password, password):
             login_user(user, remember=remember)
             return redirect("/account")
@@ -288,7 +271,7 @@ def profile():
     context = {
         'questions': questions
     }
-    return render_template("account.html", name=current_user.username)
+    return render_template("account.html", name=current_user.username, **context)
 
 
 @app.route('/account_details', methods=['GET', 'POST'])
@@ -310,20 +293,19 @@ def ask():
     if request.method == 'POST':
         question = request.form['question']
         teacher = request.form['user_name']
-        student = request.form['user_name']
 
         question = Question(
             question=question,
             teacher_id=teacher,
-            student_id=student
+            asked_by_id=current_user.id
         )
 
         db.session.add(question)
         db.session.commit()
 
-        return redirect('index.html')
+        return redirect('/index')
 
-    teacher = Teacher.query.filter_by(teacher=True).all()
+    teacher = User.query.filter_by(teacher=True).all()
 
     context = {
         'teacher': teacher
@@ -331,7 +313,7 @@ def ask():
     return render_template("ask.html", title="school_me", **context)
 
 
-@app.route('/answer/<int:question_id>', methods=['GET', 'POST'])
+@app.route('/solutions/<int:question_id>', methods=['GET', 'POST'])
 @login_required
 def answer(question_id):
     if not current_user.teacher:
@@ -343,30 +325,30 @@ def answer(question_id):
         question.answer = request.form['answer']
         db.session.commit()
 
-        return redirect(url_for('"unanswered.html"'))
+        return redirect('/unanswered')
 
     context = {
         'question': question
     }
 
-    return render_template("answer.html", title="school_me", **context)
+    return render_template("solutions.html", title="school_me", **context)
 
 
-@app.route('/question/<int:question_id>')
+@app.route('/quizes/<int:question_id>')
 def question(question_id):
     question = Question.query.get_or_404(question_id)
     context = {
         'question': question
     }
 
-    return render_template("question.html", title="school_me", **context)
+    return render_template("quizes.html", title="school_me", **context)
 
 
 @app.route("/unanswered")
 @login_required
 def unanswered():
     if not current_user.teacher:
-        return redirect('/index.html')
+        return redirect('/index')
     unanswered_questions = Question.query \
         .filter_by(teacher_id=current_user.id) \
         .filter(Question.answer is None) \
@@ -383,9 +365,9 @@ def unanswered():
 @login_required
 def users():
     if not current_user.admin:
-        return redirect('index.html')
+        return redirect('index')
 
-    users = Student or Teacher.query.filter_by(admin=False).all()
+    users = User.query.filter_by(admin=False).all()
 
     context = {
         'users': users
@@ -398,9 +380,9 @@ def users():
 @login_required
 def promote(teacher_id):
     if not current_user.admin:
-        return redirect(url_for("index.html"))
+        return redirect('/index')
 
-    user = Teacher.query.get_or_404(teacher_id)
+    user = User.query.get_or_404(teacher_id)
 
     user.teacher = True
     db.session.commit()
