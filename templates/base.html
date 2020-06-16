@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
 
     <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet">
 </head>
@@ -47,17 +47,19 @@
                   </li>
 
                   <li class="nav-item ">
-                    <a class="nav-link" href="/ask"><span class="badge badge-secondary">ask</span></a>
-                  </li>
-
-
-                  <li class="nav-item ">
                     <a class="nav-link" href="/unanswered"><span class="badge badge-secondary">unanswered</span></a>
                   </li>
 
+                    {%if current_user.admin%}
                   <li class="nav-item ">
-                    <a class="nav-link" href="/logout"><span class="badge badge-secondary">Exit</span></a>
+                    <a class="nav-link" href="/ask"><span class="badge badge-secondary">ask</span></a>
                   </li>
+
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/users"><span class="badge badge-secondary">users</span></a>
+                  </li>
+                    {% endif %}
+
                     {% else %}
                   <li class="nav-item">
                     <a class="nav-link" href="/sign_up"><span class="badge badge-secondary">Sign_up</span></a>
@@ -67,6 +69,9 @@
                     <a class="nav-link" href="/login"><span class="badge badge-secondary">Login</span></a>
                   </li>
                     {% endif %}
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/logout"><span class="badge badge-secondary">Exit</span></a>
+                  </li>
 
                 </ul>
 
